@@ -4,6 +4,14 @@ This repository is a tutorial and implementation project for building JEPA-style
 
 The tutorial itself is the documentation, and it lives in `docs/`. As the tutorial progresses, it builds the implementation in `src/` alongside it.
 
+## Local Setup
+
+Make sure `uv` is installed first. Then bootstrap the development environment, sync the locked dependencies, and install the Git hooks:
+
+```bash
+./setup.py
+```
+
 ## Serve the docs
 
 ```bash
