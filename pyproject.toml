@@ -18,6 +18,16 @@ dependencies = [
 ]
 
 [dependency-groups]
+dev = [
+    "marimo>=0.23.6",
+    "mkdocs-glightbox>=0.5.2",
+    "mkdocs-material>=9.7.6",
+    "pymdown-extensions>=10.21.3",
+    "pytest>=9.0.3",
+    "ruff>=0.15.13",
+    "tensorboard>=2.20.0",
+    "ty>=0.0.38",
+]
 docs = [
     "mkdocs-material>=9.7.6",
     "mkdocs-glightbox>=0.5.2",
