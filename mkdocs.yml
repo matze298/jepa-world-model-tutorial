@@ -71,4 +71,11 @@ nav:
       - 2.3 Positional Embeddings: chapter-02/positional-embeddings.md
       - 2.4 Context and Target Mask Sampling: chapter-02/context-target-masks.md
       - 2.5 Minimal ViT Encoder: chapter-02/minimal-vit-encoder.md
+      - 2.6 EMA Target Encoder: chapter-02/ema-target-encoder.md
+      - 2.7 JEPA Predictor: chapter-02/jepa-predictor.md
+      - 2.8 Losses and Diagnostics: chapter-02/losses-and-diagnostics.md
+      - 2.9 Training Loop: chapter-02/training-loop.md
+      - 2.10 Evaluation k-NN and Linear Probe: chapter-02/evaluation-knn-minimal-probe.md
+      - 2.11 Running the First Experiment: chapter-02/first-experiment.md
+      - 2.12 Chapter 2 Consolidation: chapter-02/consolidation.md
   - References: references.md
