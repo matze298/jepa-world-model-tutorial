@@ -1,0 +1,73 @@
+site_name: JEPA-Style World Models
+site_description: From representation learning to real-world predictive systems
+site_author: Ma Tze
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.indexes
+    - content.code.copy
+    - content.code.annotate
+    - search.highlight
+    - toc.follow
+  palette:
+    - scheme: default
+      primary: black
+      accent: deep orange
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: black
+      accent: deep orange
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+
+plugins:
+  - search
+  - glightbox
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js
+  - https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js
+  - assets/katex.js
+
+extra_css:
+  - https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css
+
+nav:
+  - Home: index.md
+  - Chapter 1 - Foundations of JEPA:
+      - 1.0 Introduction: chapter-01/introduction.md
+      - 1.1 Self-Supervised Learning Landscape: chapter-01/ssl-landscape.md
+      - 1.2 Why Not Pixels?: chapter-01/why-not-pixels.md
+      - 1.3 The JEPA Objective: chapter-01/jepa-objective.md
+      - 1.4 Representation Geometry: chapter-01/representation-geometry.md
+  - Chapter 2 - Minimal I-JEPA Implementation:
+      - 2.0 Implementation Overview: chapter-02/implementation-overview.md
+      - 2.1 Project Setup: chapter-02/project-setup.md
+      - 2.2 Image Patchification: chapter-02/image-patchification.md
+      - 2.3 Positional Embeddings: chapter-02/positional-embeddings.md
+      - 2.4 Context and Target Mask Sampling: chapter-02/context-target-masks.md
+      - 2.5 Minimal ViT Encoder: chapter-02/minimal-vit-encoder.md
+  - References: references.md
