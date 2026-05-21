@@ -1,6 +1,7 @@
 site_name: JEPA-Style World Models
 site_description: From representation learning to real-world predictive systems
-site_author: Ma Tze
+site_author: matze298
+site_url: https://matze298.github.io/jepa-world-model-tutorial/
 
 theme:
   name: material

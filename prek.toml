@@ -1,0 +1,45 @@
+default_stages = ["pre-commit"]
+
+[[repos]]
+repo = "https://github.com/pre-commit/pre-commit-hooks"
+rev = "v6.0.0"
+hooks = [
+  { id = "no-commit-to-branch"},
+  { id = "trailing-whitespace" },
+  { id = "end-of-file-fixer" },
+  { id = "check-yaml" },
+  { id = "check-toml" },
+  { id = "check-added-large-files" },
+  { id = "check-merge-conflict" },
+  { id = "debug-statements" },
+  { id = "check-executables-have-shebangs" },
+]
+
+[[repos]]
+repo = "local"
+hooks = [
+    {
+        id = "ruff-check",
+        name = "ruff check",
+        language = "system",
+        entry = "uv run ruff check --fix",
+        types = ["python"],
+        priority = 0,
+    },
+    {
+        id = "ruff-format",
+        name = "ruff format",
+        language = "system",
+        entry = "uv run ruff format",
+        types = ["python"],
+        priority = 10,
+    },
+    {
+        id = "ty",
+        name = "ty",
+        language = "system",
+        entry = "uv run ty check",
+        types = ["python"],
+        priority = 20,
+    },
+]
