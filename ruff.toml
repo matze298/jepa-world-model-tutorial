@@ -18,5 +18,8 @@ ignore = [
 
 pydocstyle.convention = "google"
 
+[lint.per-file-ignores]
+"setup.py" = ["PLC0415", "S404", "S603"]
+
 [format]
 preview = true

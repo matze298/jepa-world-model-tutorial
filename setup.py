@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.14"
 # dependencies = [
@@ -6,6 +6,7 @@
 # ]
 # ///
 """Bootstrap local development for this repository."""
+
 from __future__ import annotations
 
 import subprocess

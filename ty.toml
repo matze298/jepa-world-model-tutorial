@@ -1,1 +1,2 @@
-error = ["all"]
+[rules]
+all = "error"
