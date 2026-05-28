@@ -189,12 +189,7 @@ Chapter 2 turns the mathematical objective into working code.
 
 The goal is a minimal but correct PyTorch implementation of image JEPA. The implementation should be small enough to understand completely, but realistic enough to train and evaluate.
 
-The current chapter 2 draft covers:
-
-- 2.0 Implementation Overview,
-- 2.1 Project Setup,
-- 2.2 Image Patchification,
-- 2.3 Positional Embeddings.
+The current Chapter 2 draft covers the complete minimal image JEPA path, from patchification through the first end-to-end experiment and consolidation.
 
 ## Sections
 
@@ -266,7 +261,7 @@ Status: **drafted**
 
 ---
 
-### 2.4 Context and Target Mask Sampling
+### [2.4 Context and Target Mask Sampling](chapter-02/context-target-masks.md)
 
 Implements the JEPA masking strategy.
 
@@ -281,11 +276,11 @@ Topics:
 - mask leakage checks,
 - batch padding or fixed target sizes.
 
-Status: **to generate**
+Status: **drafted**
 
 ---
 
-### 2.5 Minimal ViT Encoder
+### [2.5 Minimal ViT Encoder](chapter-02/minimal-vit-encoder.md)
 
 Builds the encoder backbone.
 
@@ -299,11 +294,11 @@ Topics:
 - attention heads,
 - output representations.
 
-Status: **to generate**
+Status: **drafted**
 
 ---
 
-### 2.6 EMA Target Encoder
+### [2.6 EMA Target Encoder](chapter-02/ema-target-encoder.md)
 
 Implements the slowly moving target encoder.
 
@@ -316,11 +311,11 @@ Topics:
 - target encoder checkpointing,
 - target representation stability.
 
-Status: **to generate**
+Status: **drafted**
 
 ---
 
-### 2.7 JEPA Predictor
+### [2.7 JEPA Predictor](chapter-02/jepa-predictor.md)
 
 Builds the predictor network.
 
@@ -334,11 +329,11 @@ Topics:
 - predictor depth and width,
 - predictor asymmetry.
 
-Status: **to generate**
+Status: **drafted**
 
 ---
 
-### 2.8 Losses and Diagnostics
+### [2.8 Losses and Diagnostics](chapter-02/losses-and-diagnostics.md)
 
 Implements training losses and representation health checks.
 
@@ -353,11 +348,11 @@ Topics:
 - effective rank,
 - prediction-target similarity.
 
-Status: **to generate**
+Status: **drafted**
 
 ---
 
-### 2.9 Training Loop
+### [2.9 Training Loop](chapter-02/training-loop.md)
 
 Builds the full training loop.
 
@@ -373,11 +368,11 @@ Topics:
 - gradient clipping,
 - mixed precision optional.
 
-Status: **to generate**
+Status: **drafted**
 
 ---
 
-### 2.10 Evaluation: k-NN and Linear Probe
+### [2.10 Evaluation: k-NN and Linear Probe](chapter-02/evaluation-knn-minimal-probe.md)
 
 Evaluates the learned representation.
 
@@ -390,11 +385,11 @@ Topics:
 - train/validation split,
 - diagnostic plots.
 
-Status: **to generate**
+Status: **drafted**
 
 ---
 
-### 2.11 Running the First Experiment
+### [2.11 Running the First Experiment](chapter-02/first-experiment.md)
 
 Runs the minimal implementation end-to-end.
 
@@ -407,133 +402,592 @@ Topics:
 - common failure modes,
 - first ablation ideas.
 
-Status: **to generate**
+Status: **drafted**
 
 ---
 
-# Chapter 3 — Research-Grade Engineering
+### [2.12 Chapter 2 Consolidation](chapter-02/consolidation.md)
 
-Chapter 3 turns the minimal implementation into a reusable research framework.
+Summarizes the completed minimal image JEPA implementation and defines the handoff to Chapter 3.
 
-The focus is experiment quality: reproducibility, scaling, logging, and ablations.
+Topics:
+
+- final source layout,
+- experiment scripts,
+- test layout,
+- debugging notebooks,
+- end-to-end data flow,
+- implementation invariants,
+- completion criteria.
+
+Status: **drafted**
+
+---
+
+# Chapter 3 — Research-Grade JEPA Training
+
+Chapter 3 turns the minimal Chapter 2 implementation into a serious research harness.
+
+The reader is assumed to already understand production-grade deep-learning infrastructure: structured configs, logging, checkpoints, mixed precision, distributed training, cloud runs, and experiment tracking.
+
+Therefore this chapter focuses on what is **JEPA-specific**:
+
+- preserving the online encoder, target encoder, predictor, and EMA state correctly,
+- keeping mask sampling and target prediction explicit,
+- logging collapse diagnostics as first-class metrics,
+- making checkpoint/resume semantics correct for EMA-based training,
+- scaling with Lightning Fabric without hiding the algorithm,
+- supporting controlled ablations over masks, EMA, predictor capacity, and losses.
+
+The core training logic remains:
+
+```text
+sample masks
+encode context
+encode target without gradients
+predict target representation
+compute latent loss
+update online branch
+EMA-update target branch
+log diagnostics
+```
+
+The engineering around it becomes more robust.
 
 ## Sections
 
-### 3.0 From Minimal Script to Research Codebase
+### [3.0 Research-Grade JEPA Training: Design Goals](chapter-03/research-grade-jepa-training.md)
+
+Frames the transition from a minimal educational implementation to a research-grade JEPA training harness.
 
 Topics:
 
-- why refactor,
-- separating model, data, config, training, and evaluation,
-- research-code principles.
+- what stays unchanged from Chapter 2,
+- what needs hardening,
+- why JEPA has nonstandard training-state requirements,
+- why the training loop should remain explicit,
+- why Lightning Fabric is preferred before full PyTorch Lightning,
+- what “research-grade” means specifically for JEPA.
+
+Status: **drafted**
+
+---
+
+### [3.1 Configuration for JEPA Experiments](chapter-03/configuration-for-jepa-experiments.md)
+
+Introduces structured experiment configs without re-explaining configuration systems from scratch.
+
+Topics:
+
+- JEPA-relevant config groups,
+- model/mask/training/EMA/evaluation/runtime separation,
+- validation rules that catch JEPA-specific mistakes,
+- local, STL-10, and cloud config examples,
+- config-driven model, mask, data, and optimizer construction.
+
+Important validation rules:
+
+```text
+image_size % patch_size == 0
+encoder_dim % encoder_heads == 0
+predictor_dim % predictor_heads == 0
+context_patches + target_patches <= total_patches
+tau_base <= tau_final
+target encoder excluded from optimizer
+```
+
+Planned files:
+
+```text
+src/jepa_world_model/configs/schema.py
+src/jepa_world_model/configs/loader.py
+configs/ijepa_cifar10_debug.yaml
+configs/ijepa_stl10_base.yaml
+configs/ijepa_stl10_cloud.yaml
+```
+
+Status: **drafted**
+
+---
+
+### [3.2 Run State and Experiment Manifests](chapter-03/run-state-and-experiment-manifests.md)
+
+Defines the minimal auditable run state for JEPA experiments.
+
+Topics:
+
+- run directory layout,
+- resolved config snapshots,
+- manifest metadata,
+- Git and environment capture,
+- separating training checkpoints from representation artifacts,
+- run resumption semantics.
+
+JEPA-specific state that must be preserved:
+
+```text
+online encoder
+target encoder
+predictor
+optimizer
+scheduler
+EMA schedule state / global step
+mask config
+loss config
+representation diagnostics history
+```
+
+Planned files:
+
+```text
+src/jepa_world_model/engine/run_context.py
+manifest.yaml
+config.yaml
+notes.md
+standardized run directory layout
+```
+
+Status: **drafted**
+
+---
+
+### [3.3 Metrics, Diagnostics, and Logging Cadence](chapter-03/metrics-diagnostics-and-logging-cadence.md)
+
+Defines what to log for JEPA and how often.
+
+Topics:
+
+- metric taxonomy,
+- cheap vs expensive diagnostics,
+- logging cadence,
+- JSONL as canonical metric stream,
+- TensorBoard/W&B as optional sinks,
+- metric naming conventions,
+- collapse early-warning signals.
+
+Metric groups:
+
+```text
+optimization:
+  loss
+  lr
+  grad_norm
+
+prediction:
+  pred_target/mse
+  pred_target/cosine
+
+target representation:
+  target/std_mean
+  target/dead_dim_fraction
+  target/effective_rank
+  target/norm_mean
+
+prediction representation:
+  pred/std_mean
+  pred/effective_rank
+  pred/norm_mean
+
+mask:
+  mask/overlap_fraction
+  mask/context_ratio
+  mask/target_ratio
+
+EMA:
+  ema_tau
+  ema/relative_param_l2
+
+evaluation:
+  knn/accuracy
+  linear_probe/val_acc
+```
+
+Planned files:
+
+```text
+src/jepa_world_model/engine/logging.py
+MetricLogger
+JSONL sink
+TensorBoard sink
+optional W&B sink
+diagnostic cadence config
+```
+
+Status: **drafted**
+
+---
+
+### 3.4 Checkpointing and Resume Semantics
+
+Makes checkpointing correct for JEPA, not just generic PyTorch.
+
+Topics:
+
+- what must be saved,
+- what can be exported separately,
+- resume behavior,
+- strict vs non-strict checkpoint loading,
+- online-only representation export,
+- target encoder restoration,
+- RNG state handling,
+- scheduler and EMA consistency.
+
+Critical distinction:
+
+```text
+Training checkpoint:
+  online encoder
+  target encoder
+  predictor
+  optimizer
+  scheduler
+  global step
+  epoch
+  config
+  RNG state
+
+Representation artifact:
+  online encoder only
+  preprocessing metadata
+  model config
+```
+
+Important failure case:
+
+```text
+Resuming without target encoder state changes the JEPA target distribution.
+```
+
+Planned files:
+
+```text
+src/jepa_world_model/engine/checkpointing.py
+save_training_checkpoint
+load_training_checkpoint
+export_encoder
+resume validation
+```
 
 Status: **to generate**
 
 ---
 
-### 3.1 Configuration System
+### 3.5 Optimizer, Schedules, and Gradient Management
+
+Consolidates training-control logic.
 
 Topics:
 
-- Hydra or OmegaConf,
-- config hierarchy,
-- dataset configs,
-- model configs,
-- optimizer configs,
-- experiment overrides.
+- AdamW parameter groups,
+- excluding the target encoder,
+- learning-rate schedules,
+- EMA tau schedule,
+- gradient clipping,
+- gradient accumulation,
+- update ordering,
+- sanity checks for trainable parameters.
+
+JEPA-specific update order:
+
+```text
+forward
+loss
+backward
+gradient clipping
+optimizer step
+scheduler step
+EMA update
+diagnostics/logging
+```
+
+Important invariants:
+
+```text
+target encoder is never in the optimizer
+target encoder has no gradients
+target encoder changes only through EMA
+```
+
+Planned files:
+
+```text
+src/jepa_world_model/engine/optim.py
+src/jepa_world_model/engine/schedules.py
+parameter group builders
+gradient norm utilities
+update-order test
+```
 
 Status: **to generate**
 
 ---
 
-### 3.2 Logging and Experiment Tracking
+### 3.6 Mixed Precision and Numerical Stability
+
+Adds precision control without making the JEPA loop opaque.
 
 Topics:
 
-- TensorBoard,
-- Weights & Biases,
-- scalar logs,
-- image logs,
-- mask logs,
-- representation diagnostics.
+- fp32 vs fp16 vs bf16,
+- Fabric precision modes,
+- where to keep diagnostics in fp32,
+- covariance/effective-rank precision concerns,
+- NaN/Inf detection,
+- loss scaling implications,
+- when to disable expensive diagnostics.
+
+JEPA-specific issues:
+
+```text
+representation diagnostics should often cast to fp32
+covariance/eig diagnostics can be numerically fragile
+cosine metrics can hide norm collapse
+bf16 is usually preferable on modern GPUs
+```
+
+Planned files:
+
+```text
+precision config
+safe diagnostic casting
+finite checks
+grad-scaler/Fabric integration
+```
 
 Status: **to generate**
 
 ---
 
-### 3.3 Checkpointing and Resuming
+### 3.7 Lightning Fabric Training Harness
+
+Replaces manual device/distributed boilerplate while keeping the JEPA loop explicit.
 
 Topics:
 
-- model checkpoints,
-- optimizer state,
-- EMA target encoder state,
-- scheduler state,
-- reproducible resumes.
+- Fabric setup,
+- model/optimizer/dataloader wrapping,
+- Fabric backward,
+- distributed-safe logging,
+- checkpointing with Fabric,
+- keeping EMA update explicit,
+- avoiding full LightningModule for now.
+
+The loop should still visibly contain:
+
+```python
+pred_repr, target_repr = model(...)
+loss = latent_loss(...)
+fabric.backward(loss)
+optimizer.step()
+update_ema(...)
+```
+
+Planned files:
+
+```text
+src/jepa_world_model/engine/fabric_trainer.py
+experiments/train.py
+FabricJEPAState
+distributed-safe metric logging
+```
 
 Status: **to generate**
 
 ---
 
-### 3.4 Mixed Precision and Performance
+### 3.8 Evaluation During and After Training
+
+Integrates representation evaluation into the research workflow.
 
 Topics:
 
-- AMP,
-- gradient scaling,
-- memory profiling,
-- throughput,
-- PyTorch compile,
-- attention efficiency.
+- evaluation cadence,
+- k-NN and linear probe scheduling,
+- online encoder vs target encoder evaluation,
+- feature extraction consistency,
+- checkpoint selection,
+- random encoder baseline,
+- evaluation artifact writing.
+
+JEPA-specific evaluation questions:
+
+```text
+Does lower JEPA loss correlate with better probe accuracy?
+Does target encoder outperform online encoder?
+Does EMA smoothing help retrieval?
+Does representation collapse appear before probe degradation?
+```
+
+Planned files:
+
+```text
+experiments/evaluate.py
+evaluation hooks
+optional periodic eval during training
+retrieval artifact writing
+probe result logging
+```
 
 Status: **to generate**
 
 ---
 
-### 3.5 Distributed Training
+### 3.9 Cloud Execution and RunPod Workflow
+
+Defines the cloud execution pattern without teaching cloud basics.
 
 Topics:
 
-- DDP,
-- multi-GPU training,
-- global batch size,
-- synchronization,
-- distributed evaluation.
+- single training entry point,
+- cloud config,
+- persistent storage paths,
+- environment reproduction with uv sync,
+- artifact collection,
+- interrupt/resume behavior,
+- common RunPod footguns.
+
+JEPA-specific cloud concerns:
+
+```text
+long runs must be resumable
+diagnostics should be throttled
+checkpoints must include target encoder
+evaluation may be run separately
+metrics should stream to persistent storage
+```
+
+Planned files:
+
+```text
+configs/ijepa_stl10_cloud.yaml
+scripts/run_cloud_train.sh
+scripts/resume_cloud_train.sh
+cloud run checklist
+```
 
 Status: **to generate**
 
 ---
 
-### 3.6 Ablation Framework
+### 3.10 Ablations and Experiment Sweeps
+
+Makes controlled JEPA ablations easy.
 
 Topics:
 
-- mask scale,
-- target block size,
-- number of target blocks,
-- predictor depth,
-- EMA schedule,
-- loss function,
-- encoder size.
+- sweep spec format,
+- config overrides,
+- deterministic run naming,
+- one-factor and small-grid ablations,
+- result aggregation,
+- avoiding confounded sweeps.
+
+Recommended first ablations:
+
+```text
+mask.context_ratio
+mask.target_block_height/width
+mask.num_target_blocks
+training.loss_type
+ema.tau_base
+model.predictor_depth
+model.predictor_dim
+model.encoder_depth
+```
+
+JEPA-specific analysis:
+
+```text
+loss vs linear probe
+loss vs effective rank
+context ratio vs collapse
+target block size vs retrieval
+predictor capacity vs encoder quality
+```
+
+Planned files:
+
+```text
+experiments/ablate.py
+configs/ablations/*.yaml
+sweep result directories
+aggregation script
+```
 
 Status: **to generate**
 
 ---
 
-### 3.7 Failure Mode Playbook
+### 3.11 Failure-Mode Playbook
+
+Creates a practical debugging guide for JEPA-specific failures.
 
 Topics:
 
-- collapse,
-- dimensional collapse,
-- mask leakage,
-- exploding norms,
-- weak probes,
-- unstable EMA,
-- shortcut learning.
+- symptoms,
+- likely causes,
+- diagnostic metrics,
+- first fixes,
+- confirmation tests.
+
+Failure modes:
+
+```text
+loss does not decrease
+loss goes to zero too fast
+target encoder gets gradients
+EMA does not move
+EMA diverges
+mask overlap > 0
+representation collapse
+dimensional collapse
+norm explosion
+probe accuracy random
+k-NN retrieval meaningless
+cloud run differs from local
+resume changes dynamics
+mixed precision NaNs
+```
+
+Planned content:
+
+```text
+failure-mode table
+diagnostic checklist
+metric thresholds
+debug commands
+```
 
 Status: **to generate**
 
+---
+
+### 3.12 Chapter 3 Consolidation
+
+Summarizes the final research-grade training harness.
+
+Topics:
+
+- final file layout,
+- final commands,
+- run lifecycle,
+- invariants,
+- checklist before moving to temporal/video JEPA.
+
+Final expected lifecycle:
+
+```text
+choose config
+initialize run directory
+train with Fabric
+log JSONL + TensorBoard/W&B
+checkpoint/resume
+evaluate
+aggregate ablations
+inspect failure diagnostics
+```
+
+Status: **to generate**
 ---
 
 # Chapter 4 — From Images to Video and Temporal JEPA
@@ -1058,35 +1512,35 @@ Start with Chapter 6 if your main interest is the cycling application, but retur
 
 # Core References
 
-- Yann LeCun, **A Path Towards Autonomous Machine Intelligence**, 2022.  
+- Yann LeCun, **A Path Towards Autonomous Machine Intelligence**, 2022.
   <https://openreview.net/forum?id=BZ5a1r-kVsf>
 
-- Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, Nicolas Ballas, **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.  
+- Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, Nicolas Ballas, **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.
   <https://arxiv.org/abs/2301.08243>
 
-- Facebook Research, **Official I-JEPA Codebase**.  
+- Facebook Research, **Official I-JEPA Codebase**.
   <https://github.com/facebookresearch/ijepa>
 
-- Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li, Piotr Dollár, Ross Girshick, **Masked Autoencoders Are Scalable Vision Learners**, 2021.  
+- Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li, Piotr Dollár, Ross Girshick, **Masked Autoencoders Are Scalable Vision Learners**, 2021.
   <https://arxiv.org/abs/2111.06377>
 
-- Jean-Bastien Grill et al., **Bootstrap Your Own Latent: A New Approach to Self-Supervised Learning**, 2020.  
+- Jean-Bastien Grill et al., **Bootstrap Your Own Latent: A New Approach to Self-Supervised Learning**, 2020.
   <https://arxiv.org/abs/2006.07733>
 
-- Adrien Bardes, Jean Ponce, Yann LeCun, **VICReg: Variance-Invariance-Covariance Regularization for Self-Supervised Learning**, 2021.  
+- Adrien Bardes, Jean Ponce, Yann LeCun, **VICReg: Variance-Invariance-Covariance Regularization for Self-Supervised Learning**, 2021.
   <https://arxiv.org/abs/2105.04906>
 
-- Jure Zbontar et al., **Barlow Twins: Self-Supervised Learning via Redundancy Reduction**, 2021.  
+- Jure Zbontar et al., **Barlow Twins: Self-Supervised Learning via Redundancy Reduction**, 2021.
   <https://arxiv.org/abs/2103.03230>
 
-- Adrien Bardes, Quentin Garrido, Jean Ponce, Xinlei Chen, Michael Rabbat, Yann LeCun, Mahmoud Assran, Nicolas Ballas, **Revisiting Feature Prediction for Learning Visual Representations from Video**, 2024.  
+- Adrien Bardes, Quentin Garrido, Jean Ponce, Xinlei Chen, Michael Rabbat, Yann LeCun, Mahmoud Assran, Nicolas Ballas, **Revisiting Feature Prediction for Learning Visual Representations from Video**, 2024.
   <https://arxiv.org/abs/2404.08471>
 
-- Mahmoud Assran et al., **V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning**, 2025.  
+- Mahmoud Assran et al., **V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning**, 2025.
   <https://arxiv.org/abs/2506.09985>
 
-- Danijar Hafner et al., **Learning Latent Dynamics for Planning from Pixels**, 2019.  
+- Danijar Hafner et al., **Learning Latent Dynamics for Planning from Pixels**, 2019.
   <https://arxiv.org/abs/1811.04551>
 
-- Danijar Hafner et al., **Dream to Control: Learning Behaviors by Latent Imagination**, 2020.  
+- Danijar Hafner et al., **Dream to Control: Learning Behaviors by Latent Imagination**, 2020.
   <https://arxiv.org/abs/1912.01603>

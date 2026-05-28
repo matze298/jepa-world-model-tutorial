@@ -78,4 +78,9 @@ nav:
       - 2.10 Evaluation k-NN and Linear Probe: chapter-02/evaluation-knn-minimal-probe.md
       - 2.11 Running the First Experiment: chapter-02/first-experiment.md
       - 2.12 Chapter 2 Consolidation: chapter-02/consolidation.md
+  - Chapter 3 - Research-Grade JEPA Training:
+      - 3.0 Design Goals: chapter-03/research-grade-jepa-training.md
+      - 3.1 Configuration for JEPA Experiments: chapter-03/configuration-for-jepa-experiments.md
+      - 3.2 Run State and Experiment Manifests: chapter-03/run-state-and-experiment-manifests.md
+      - 3.3 Metrics, Diagnostics, and Logging Cadence: chapter-03/metrics-diagnostics-and-logging-cadence.md
   - References: references.md

@@ -26,7 +26,7 @@ The setup has three guiding assumptions:
 
 The code in this tutorial assumes a modern Python and PyTorch stack.
 
-At the time of writing, the latest stable Python release is **Python 3.14.5**, released on May 10, 2026. The latest stable PyTorch release is **PyTorch 2.12.0**. Newer versions may also work, but the tutorial assumes this general generation of tooling. :contentReference[oaicite:1]{index=1}
+At the time of writing, the latest stable Python release is **Python 3.14.5**, released on May 10, 2026. The latest stable PyTorch release is **PyTorch 2.12.0**. Newer versions may also work, but the tutorial assumes this general generation of tooling.
 
 Recommended baseline:
 
@@ -196,7 +196,7 @@ The reasons are practical:
 - notebooks can be served as interactive apps,
 - they avoid much of the hidden-state problem common in traditional notebooks.
 
-The official marimo site describes marimo as a reactive Python notebook stored as reproducible, Git-friendly Python, and the docs support installation and execution directly with `uv`. :contentReference[oaicite:2]{index=2}
+The official marimo site describes marimo as a reactive Python notebook stored as reproducible, Git-friendly Python, and the docs support installation and execution directly with `uv`.
 
 For this project, marimo notebooks are for:
 
@@ -630,26 +630,26 @@ The next section begins the actual implementation: image patchification.
 
 ## References and Further Reading
 
-- Astral, **uv — Working on projects**.  
+- Astral, **uv — Working on projects**.
   <https://docs.astral.sh/uv/guides/projects/>
 
-- marimo, **Documentation**.  
+- marimo, **Documentation**.
   <https://docs.marimo.io/>
 
-- marimo, **Installation**.  
+- marimo, **Installation**.
   <https://docs.marimo.io/getting_started/installation/>
 
-- Python, **Python 3.14.5 Release**.  
+- Python, **Python 3.14.5 Release**.
   <https://www.python.org/downloads/release/python-3145/>
 
-- PyTorch, **Get Started Locally**.  
+- PyTorch, **Get Started Locally**.
   <https://pytorch.org/get-started/locally/>
 
-- PyTorch, **Releases**.  
+- PyTorch, **Releases**.
   <https://github.com/pytorch/pytorch/releases>
 
-- RunPod, **Documentation Overview**.  
+- RunPod, **Documentation Overview**.
   <https://docs.runpod.io/overview>
 
-- MkDocs Material, **Getting Started**.  
+- MkDocs Material, **Getting Started**.
   <https://squidfunk.github.io/mkdocs-material/getting-started/>
