@@ -92,10 +92,12 @@ MSE is the simplest choice:
 \[
 \mathcal{L}_{\mathrm{MSE}}
 =
-\frac{1}{B N D}
+\frac{1}{B N_{\mathrm{tgt}} D}
 \sum_{b,i,j}
 (\hat{z}_{b,i,j} - z_{b,i,j})^2
 \]
+
+Here \(B\) is batch size, \(N_{\mathrm{tgt}}\) is the number of target tokens, \(D\) is representation dimension, and \(\hat{z}_{b,i,j}\) and \(z_{b,i,j}\) are matching predicted and target representation elements.
 
 It preserves magnitude information.
 
@@ -136,6 +138,8 @@ Cosine loss compares directions rather than magnitudes.
 \|\hat{z}\| \|z\|
 }
 \]
+
+In this expression, \(\hat{z}\) and \(z\) denote a matching predicted-target representation pair after selecting one batch item and one target token; the implementation averages this quantity over the batch and target-token dimensions.
 
 In code:
 

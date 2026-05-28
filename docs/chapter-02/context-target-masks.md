@@ -50,6 +50,8 @@ The context and target sets must not overlap:
 \mathcal{C} \cap \mathcal{T} = \emptyset
 \]
 
+Here \(\mathcal{C}\) is the set of context patch indices and \(\mathcal{T}\) is the set of target patch indices for one image.
+
 In code:
 
 ```python

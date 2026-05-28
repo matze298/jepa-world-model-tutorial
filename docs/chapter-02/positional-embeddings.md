@@ -4,13 +4,13 @@ Patchification turns an image into a sequence of patch tokens.
 
 But a sequence alone does not tell the model where each patch came from.
 
-After patchification, an image becomes:
+After patchification and linear projection, an image becomes a sequence of patch embeddings:
 
 \[
-x \in \mathbb{R}^{B \times N \times D}
+p \in \mathbb{R}^{B \times N \times D}
 \]
 
-where \(N\) is the number of patches. A transformer sees this as a set or sequence of vectors. Without positional information, patch token \(17\) and patch token \(83\) are just two vectors. The model has no intrinsic knowledge that one patch came from the top-left of the image and another came from the bottom-right.
+where \(B\) is batch size, \(N\) is the number of patches, and \(D\) is the embedding dimension. A transformer sees this as a set or sequence of vectors. Without positional information, patch token \(17\) and patch token \(83\) are just two vectors. The model has no intrinsic knowledge that one patch came from the top-left of the image and another came from the bottom-right.
 
 For JEPA, this is especially important.
 

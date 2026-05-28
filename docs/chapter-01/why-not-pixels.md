@@ -67,7 +67,7 @@ x_{t+1:t+K}
 \mathbb{R}^{K \times D}
 \]
 
-where \(K\) is the prediction horizon and \(D\) is the number of observed channels.
+where \(t\) is the current time index, \(K\) is the prediction horizon, \(H_{\mathrm{img}}\) and \(W_{\mathrm{img}}\) are image height and width, and \(D\) is the number of observed channels.
 
 The problem is that the raw observation contains much more information than the model may need.
 

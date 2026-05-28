@@ -56,7 +56,9 @@ For an image, \(x\) might be an RGB tensor:
 x \in \mathbb{R}^{3 \times H \times W}
 \]
 
-and \(z\) might be a vector or sequence of patch-level embeddings:
+where \(H\) and \(W\) are image height and width.
+
+The representation \(z\) might be a vector or sequence of patch-level embeddings:
 
 \[
 z \in \mathbb{R}^{N \times D}
@@ -82,6 +84,8 @@ The model observes \(x_{\mathrm{ctx}}\) and predicts a representation of \(x_{\m
 =
 g_\theta(f_\theta(x_{\mathrm{ctx}}))
 \]
+
+where \(\hat{z}_{\mathrm{tgt}}\) is the predicted target representation.
 
 The target representation is produced by an encoder:
 
