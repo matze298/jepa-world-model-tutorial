@@ -6,6 +6,8 @@ This tutorial builds JEPA-style world models from first principles.
 
 It starts with the mathematical and conceptual foundations of Joint-Embedding Predictive Architectures, then develops a minimal I-JEPA implementation, scales it into a research-grade codebase, extends it to temporal and action-conditioned world models, and finally applies the ideas to a real-world cycling intelligence problem.
 
+The intended workflow is to write the code alongside the tutorial. The documentation explains each component, then the repository implementation in `src/`, `experiments/`, `notebooks/`, and `tests/` grows with it.
+
 The goal is to bridge:
 
 - research theory,

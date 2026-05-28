@@ -16,6 +16,8 @@ In its simplest image-based form, a JEPA receives a visible context region of an
 
 This tutorial develops that idea into a complete path from representation learning to world modeling.
 
+The tutorial is meant to be followed as a build-along project. As the chapters introduce an objective, architecture, diagnostic, or training workflow, the repository should gain the corresponding implementation code, tests, notebooks, and experiment scripts.
+
 We will begin with images because images make the central ingredients easy to isolate:
 
 - visible context,
