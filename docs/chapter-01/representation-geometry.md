@@ -989,22 +989,22 @@ Planning requires more than good static representations.
 
 A planning-friendly latent space should have several properties:
 
-1. **Predictability**  
+1. **Predictability**
    Future latents should be predictable from current latents and actions.
 
-2. **Smoothness**  
+2. **Smoothness**
    Small changes in state or action should not produce arbitrary jumps.
 
-3. **Task relevance**  
+3. **Task relevance**
    The latent should preserve variables relevant to objectives.
 
-4. **Abstraction**  
+4. **Abstraction**
    Nuisance detail should be suppressed.
 
-5. **Compositionality**  
+5. **Compositionality**
    Multi-step rollouts should remain meaningful.
 
-6. **Uncertainty awareness**  
+6. **Uncertainty awareness**
    The model should express uncertainty when futures are ambiguous.
 
 A latent rollout is useful only if distances and directions in latent space correspond to meaningful differences.
@@ -1214,29 +1214,39 @@ We will monitor:
 - temporal smoothness,
 - action sensitivity.
 
+Before moving on, the reader should be able to check off the core Chapter 1 ideas:
+
+- explain why JEPA predicts representations instead of raw observations,
+- distinguish pixel reconstruction, contrastive alignment, non-contrastive alignment, redundancy reduction, and masked predictive representation learning,
+- write the JEPA objective with an online encoder, target encoder, predictor, stop-gradient, and EMA target update,
+- explain why mask design can create or prevent shortcut learning,
+- describe collapse, dimensional collapse, redundancy, norm instability, and mask leakage,
+- name the diagnostics needed before trusting a JEPA training loss,
+- connect image JEPA to temporal prediction and action-conditioned latent dynamics.
+
 The next chapter will move from the high-level foundation to implementation. We will start building the minimal I-JEPA system: patch embeddings, masks, encoders, predictors, losses, and training loops.
 
 ---
 
 ## References and Further Reading
 
-- Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, Nicolas Ballas, **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.  
+- Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, Nicolas Ballas, **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.
   <https://arxiv.org/abs/2301.08243>
 
-- Jean-Bastien Grill et al., **Bootstrap Your Own Latent: A New Approach to Self-Supervised Learning**, 2020.  
+- Jean-Bastien Grill et al., **Bootstrap Your Own Latent: A New Approach to Self-Supervised Learning**, 2020.
   <https://arxiv.org/abs/2006.07733>
 
-- Xinlei Chen, Kaiming He, **Exploring Simple Siamese Representation Learning**, 2020.  
+- Xinlei Chen, Kaiming He, **Exploring Simple Siamese Representation Learning**, 2020.
   <https://arxiv.org/abs/2011.10566>
 
-- Jure Zbontar et al., **Barlow Twins: Self-Supervised Learning via Redundancy Reduction**, 2021.  
+- Jure Zbontar et al., **Barlow Twins: Self-Supervised Learning via Redundancy Reduction**, 2021.
   <https://arxiv.org/abs/2103.03230>
 
-- Adrien Bardes, Jean Ponce, Yann LeCun, **VICReg: Variance-Invariance-Covariance Regularization for Self-Supervised Learning**, 2021.  
+- Adrien Bardes, Jean Ponce, Yann LeCun, **VICReg: Variance-Invariance-Covariance Regularization for Self-Supervised Learning**, 2021.
   <https://arxiv.org/abs/2105.04906>
 
-- Randall Balestriero et al., **A Cookbook of Self-Supervised Learning**, 2023.  
+- Randall Balestriero et al., **A Cookbook of Self-Supervised Learning**, 2023.
   <https://arxiv.org/abs/2304.12210>
 
-- Yann LeCun, **A Path Towards Autonomous Machine Intelligence**, 2022.  
+- Yann LeCun, **A Path Towards Autonomous Machine Intelligence**, 2022.
   <https://openreview.net/forum?id=BZ5a1r-kVsf>

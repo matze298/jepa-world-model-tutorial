@@ -54,20 +54,20 @@ x \in \mathbb{R}^{3 \times H \times W}
 For a video, the target might be:
 
 \[
-x_{t+1:t+H}
+x_{t+1:t+K}
 \in
-\mathbb{R}^{H \times 3 \times T \times H_{\mathrm{img}} \times W_{\mathrm{img}}}
+\mathbb{R}^{K \times 3 \times H_{\mathrm{img}} \times W_{\mathrm{img}}}
 \]
 
 For a sensor sequence, the target might be:
 
 \[
-x_{t+1:t+H}
+x_{t+1:t+K}
 \in
-\mathbb{R}^{H \times D}
+\mathbb{R}^{K \times D}
 \]
 
-where \(D\) is the number of observed channels.
+where \(K\) is the prediction horizon and \(D\) is the number of observed channels.
 
 The problem is that the raw observation contains much more information than the model may need.
 
@@ -826,9 +826,9 @@ where:
 A raw prediction model might learn:
 
 \[
-\hat{x}_{t+1:t+H}
+\hat{x}_{t+1:t+K}
 =
-G_\theta(x_{t-L:t}, a_{t:t+H})
+G_\theta(x_{t-L:t}, a_{t:t+K})
 \]
 
 with loss:
@@ -837,9 +837,9 @@ with loss:
 \mathcal{L}_{\mathrm{raw}}
 =
 \left\|
-\hat{x}_{t+1:t+H}
+\hat{x}_{t+1:t+K}
 -
-x_{t+1:t+H}
+x_{t+1:t+K}
 \right\|^2
 \]
 
@@ -856,13 +856,13 @@ f_\theta(x_{t-L:t})
 \[
 z_{\mathrm{future}}
 =
-f_{\bar{\theta}}(x_{t+1:t+H})
+f_{\bar{\theta}}(x_{t+1:t+K})
 \]
 
 \[
 \hat{z}_{\mathrm{future}}
 =
-F_\phi(z_{\mathrm{past}}, a_{t:t+H})
+F_\phi(z_{\mathrm{past}}, a_{t:t+K})
 \]
 
 with loss:
@@ -1064,20 +1064,20 @@ The rest of the tutorial builds on this idea. We will now move from intuition to
 
 ## References and Further Reading
 
-- Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li, Piotr Dollár, Ross Girshick, **Masked Autoencoders Are Scalable Vision Learners**, 2021.  
+- Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li, Piotr Dollár, Ross Girshick, **Masked Autoencoders Are Scalable Vision Learners**, 2021.
   <https://arxiv.org/abs/2111.06377>
 
-- Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, Nicolas Ballas, **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.  
+- Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, Nicolas Ballas, **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.
   <https://arxiv.org/abs/2301.08243>
 
-- Adrien Bardes, Quentin Garrido, Jean Ponce, Xinlei Chen, Michael Rabbat, Yann LeCun, Mahmoud Assran, Nicolas Ballas, **Revisiting Feature Prediction for Learning Visual Representations from Video**, 2024.  
+- Adrien Bardes, Quentin Garrido, Jean Ponce, Xinlei Chen, Michael Rabbat, Yann LeCun, Mahmoud Assran, Nicolas Ballas, **Revisiting Feature Prediction for Learning Visual Representations from Video**, 2024.
   <https://arxiv.org/abs/2404.08471>
 
-- Yann LeCun, **A Path Towards Autonomous Machine Intelligence**, 2022.  
+- Yann LeCun, **A Path Towards Autonomous Machine Intelligence**, 2022.
   <https://openreview.net/forum?id=BZ5a1r-kVsf>
 
-- Danijar Hafner et al., **Learning Latent Dynamics for Planning from Pixels**, 2019.  
+- Danijar Hafner et al., **Learning Latent Dynamics for Planning from Pixels**, 2019.
   <https://arxiv.org/abs/1811.04551>
 
-- Danijar Hafner et al., **Dream to Control: Learning Behaviors by Latent Imagination**, 2020.  
+- Danijar Hafner et al., **Dream to Control: Learning Behaviors by Latent Imagination**, 2020.
   <https://arxiv.org/abs/1912.01603>

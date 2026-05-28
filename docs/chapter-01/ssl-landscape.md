@@ -109,7 +109,7 @@ The categories overlap, but the taxonomy clarifies what JEPA inherits and what i
 
 The table below gives a high-level map.
 
-| Family | Input | Target | Loss Type | Predicts Pixels? | Main Risk |
+| Method / Example | Input | Target | Loss Type | Predicts Pixels? | Main Risk |
 |---|---|---|---|---:|---|
 | Autoencoder | full input | same input | reconstruction | yes | low-level detail |
 | Denoising AE | corrupted input | clean input | reconstruction | yes | shortcut learning |
@@ -867,7 +867,7 @@ I-JEPA instantiates this idea for images. It predicts representations of target 
 A simplified JEPA-style model interface is:
 
 ```python
-class JEPAModel(nn.Module):
+class MinimalIJEPA(nn.Module):
     def __init__(
         self,
         online_encoder: nn.Module,
@@ -912,7 +912,7 @@ The training step is:
 
 ```python
 def train_jepa_step(
-    model: JEPAModel,
+    model: MinimalIJEPA,
     images: torch.Tensor,
     context_indices: torch.Tensor,
     target_indices: torch.Tensor,
@@ -1120,23 +1120,23 @@ x_{t-L:t}
 a window of recent telemetry. A future target might be:
 
 \[
-x_{t:t+H}
+x_{t+1:t+K}
 \]
 
 A JEPA-style temporal model would encode the future target using a target encoder:
 
 \[
-z_{t:t+H}^{\mathrm{target}}
+z_{t+1:t+K}^{\mathrm{target}}
 =
-f_{\bar{\theta}}(x_{t:t+H})
+f_{\bar{\theta}}(x_{t+1:t+K})
 \]
 
 and train a dynamics model to predict it:
 
 \[
-\hat{z}_{t:t+H}
+\hat{z}_{t+1:t+K}
 =
-F_\theta(f_\theta(x_{t-L:t}), a_{t:t+H})
+F_\theta(f_\theta(x_{t-L:t}), a_{t:t+K})
 \]
 
 A skeleton PyTorch interface might be:
@@ -1409,26 +1409,26 @@ JEPA is especially relevant for world modeling because it is predictive and abst
 
 This makes it a natural bridge from self-supervised image representation learning to temporal latent prediction and action-conditioned world models.
 
-The next section will derive the JEPA objective more carefully.
+The next section explains why raw observation prediction is not always the right target. After that, Section 1.3 derives the JEPA objective more carefully.
 
 ---
 
 ## References and Further Reading
 
-- Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li, Piotr Dollár, Ross Girshick, **Masked Autoencoders Are Scalable Vision Learners**, 2021.  
+- Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li, Piotr Dollár, Ross Girshick, **Masked Autoencoders Are Scalable Vision Learners**, 2021.
   <https://arxiv.org/abs/2111.06377>
 
-- Jean-Bastien Grill et al., **Bootstrap Your Own Latent: A New Approach to Self-Supervised Learning**, 2020.  
+- Jean-Bastien Grill et al., **Bootstrap Your Own Latent: A New Approach to Self-Supervised Learning**, 2020.
   <https://arxiv.org/abs/2006.07733>
 
-- Adrien Bardes, Jean Ponce, Yann LeCun, **VICReg: Variance-Invariance-Covariance Regularization for Self-Supervised Learning**, 2021.  
+- Adrien Bardes, Jean Ponce, Yann LeCun, **VICReg: Variance-Invariance-Covariance Regularization for Self-Supervised Learning**, 2021.
   <https://arxiv.org/abs/2105.04906>
 
-- Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, Nicolas Ballas, **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.  
+- Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, Nicolas Ballas, **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.
   <https://arxiv.org/abs/2301.08243>
 
-- Facebook Research, **Official I-JEPA Codebase**.  
+- Facebook Research, **Official I-JEPA Codebase**.
   <https://github.com/facebookresearch/ijepa>
 
-- Yann LeCun, **A Path Towards Autonomous Machine Intelligence**, 2022.  
+- Yann LeCun, **A Path Towards Autonomous Machine Intelligence**, 2022.
   <https://openreview.net/forum?id=BZ5a1r-kVsf>

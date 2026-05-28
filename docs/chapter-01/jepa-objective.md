@@ -393,7 +393,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class JEPAModel(nn.Module):
+class MinimalIJEPA(nn.Module):
     def __init__(
         self,
         online_encoder: nn.Module,
@@ -418,19 +418,19 @@ class JEPAModel(nn.Module):
 
     def forward(
         self,
-        x: torch.Tensor,
+        images: torch.Tensor,
         context_indices: torch.Tensor,
         target_indices: torch.Tensor,
     ) -> tuple[torch.Tensor, torch.Tensor]:
         context_repr = self.online_encoder(
-            x=x,
-            indices=context_indices,
+            images=images,
+            patch_indices=context_indices,
         )
 
         with torch.no_grad():
             target_repr = self.target_encoder(
-                x=x,
-                indices=target_indices,
+                images=images,
+                patch_indices=target_indices,
             )
 
         pred_repr = self.predictor(
@@ -478,15 +478,15 @@ The training step:
 
 ```python
 def train_jepa_step(
-    model: JEPAModel,
-    x: torch.Tensor,
+    model: MinimalIJEPA,
+    images: torch.Tensor,
     context_indices: torch.Tensor,
     target_indices: torch.Tensor,
     optimizer: torch.optim.Optimizer,
     tau: float,
 ) -> torch.Tensor:
     pred_repr, target_repr = model(
-        x=x,
+        images=images,
         context_indices=context_indices,
         target_indices=target_indices,
     )
@@ -1312,13 +1312,13 @@ f_\theta(x_{t-L:t})
 \[
 z_{\mathrm{future}}
 =
-f_{\bar{\theta}}(x_{t+1:t+H})
+f_{\bar{\theta}}(x_{t+1:t+K})
 \]
 
 \[
 \hat{z}_{\mathrm{future}}
 =
-F_\phi(z_{\mathrm{past}}, a_{t:t+H})
+F_\phi(z_{\mathrm{past}}, a_{t:t+K})
 \]
 
 \[
@@ -1398,8 +1398,8 @@ It should also return diagnostics.
 
 ```python
 def train_step_with_logs(
-    model: JEPAModel,
-    x: torch.Tensor,
+    model: MinimalIJEPA,
+    images: torch.Tensor,
     context_indices: torch.Tensor,
     target_indices: torch.Tensor,
     optimizer: torch.optim.Optimizer,
@@ -1414,7 +1414,7 @@ def train_step_with_logs(
     )
 
     pred_repr, target_repr = model(
-        x=x,
+        images=images,
         context_indices=context_indices,
         target_indices=target_indices,
     )
@@ -1540,20 +1540,20 @@ The next section studies the representation geometry induced by this objective: 
 
 ## References and Further Reading
 
-- Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, Nicolas Ballas, **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.  
+- Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, Nicolas Ballas, **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.
   <https://arxiv.org/abs/2301.08243>
 
-- Jean-Bastien Grill et al., **Bootstrap Your Own Latent: A New Approach to Self-Supervised Learning**, 2020.  
+- Jean-Bastien Grill et al., **Bootstrap Your Own Latent: A New Approach to Self-Supervised Learning**, 2020.
   <https://arxiv.org/abs/2006.07733>
 
-- Xinlei Chen, Kaiming He, **Exploring Simple Siamese Representation Learning**, 2020.  
+- Xinlei Chen, Kaiming He, **Exploring Simple Siamese Representation Learning**, 2020.
   <https://arxiv.org/abs/2011.10566>
 
-- Yann LeCun, **A Path Towards Autonomous Machine Intelligence**, 2022.  
+- Yann LeCun, **A Path Towards Autonomous Machine Intelligence**, 2022.
   <https://openreview.net/forum?id=BZ5a1r-kVsf>
 
-- Facebook Research, **Official I-JEPA Codebase**.  
+- Facebook Research, **Official I-JEPA Codebase**.
   <https://github.com/facebookresearch/ijepa>
 
-- Meta AI, **V-JEPA: The next step toward advanced machine intelligence**, 2024.  
+- Meta AI, **V-JEPA: The next step toward advanced machine intelligence**, 2024.
   <https://ai.meta.com/blog/v-jepa-yann-lecun-ai-model-video-joint-embedding-predictive-architecture/>

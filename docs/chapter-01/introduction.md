@@ -1,4 +1,4 @@
-# Chapter 1 — Introduction
+# 1.0 Introduction
 
 ## Building JEPA-Style World Models from First Principles
 
@@ -454,7 +454,7 @@ def train_step(
 The corresponding model interface might look like this:
 
 ```python
-class IJEPA(torch.nn.Module):
+class MinimalIJEPA(torch.nn.Module):
     def __init__(
         self,
         online_encoder: torch.nn.Module,
@@ -523,28 +523,28 @@ The goal is to understand the method deeply enough to rebuild it, modify it, deb
 
 That requires working through several layers:
 
-1. **Conceptual layer**  
+1. **Conceptual layer**
    Why predict representations instead of pixels?
 
-2. **Mathematical layer**  
+2. **Mathematical layer**
    What objective is being optimized, and what assumptions does it encode?
 
-3. **Architectural layer**  
+3. **Architectural layer**
    What are the encoder, target encoder, predictor, and mask sampler?
 
-4. **Optimization layer**  
+4. **Optimization layer**
    How do EMA, stop-gradient, normalization, and predictor asymmetry affect training?
 
-5. **Diagnostic layer**  
+5. **Diagnostic layer**
    How do we detect collapse, shortcut learning, leakage, or useless representations?
 
-6. **Systems layer**  
+6. **Systems layer**
    How do we train efficiently and reproducibly?
 
-7. **World-model layer**  
+7. **World-model layer**
    How do we move from static prediction to temporal and action-conditioned dynamics?
 
-8. **Application layer**  
+8. **Application layer**
    How do we use latent predictions for real planning problems?
 
 This is why the tutorial begins with I-JEPA but does not end there.
@@ -712,23 +712,23 @@ We begin with the broader self-supervised learning landscape.
 
 ## References and Further Reading
 
-- Yann LeCun, **A Path Towards Autonomous Machine Intelligence**, 2022.  
+- Yann LeCun, **A Path Towards Autonomous Machine Intelligence**, 2022.
   <https://openreview.net/forum?id=BZ5a1r-kVsf>
 
-- Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, Nicolas Ballas, **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.  
+- Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, Nicolas Ballas, **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.
   <https://arxiv.org/abs/2301.08243>
 
-- Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li, Piotr Dollár, Ross Girshick, **Masked Autoencoders Are Scalable Vision Learners**, 2021.  
+- Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li, Piotr Dollár, Ross Girshick, **Masked Autoencoders Are Scalable Vision Learners**, 2021.
   <https://arxiv.org/abs/2111.06377>
 
-- Adrien Bardes et al., **Revisiting Feature Prediction for Learning Visual Representations from Video**, 2024.  
+- Adrien Bardes et al., **Revisiting Feature Prediction for Learning Visual Representations from Video**, 2024.
   <https://arxiv.org/abs/2404.08471>
 
-- Mahmoud Assran et al., **V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning**, 2025.  
+- Mahmoud Assran et al., **V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning**, 2025.
   <https://arxiv.org/abs/2506.09985>
 
-- Meta AI, **V-JEPA: The next step toward advanced machine intelligence**, 2024.  
+- Meta AI, **V-JEPA: The next step toward advanced machine intelligence**, 2024.
   <https://ai.meta.com/blog/v-jepa-yann-lecun-ai-model-video-joint-embedding-predictive-architecture/>
 
-- Facebook Research, **Official I-JEPA Codebase**.  
+- Facebook Research, **Official I-JEPA Codebase**.
   <https://github.com/facebookresearch/ijepa>
