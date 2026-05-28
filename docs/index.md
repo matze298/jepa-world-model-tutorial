@@ -21,19 +21,29 @@ The goal is to bridge:
 
 Modern AI systems often learn by reconstructing, classifying, or generating observations. JEPA-style models take a different route: they predict **representations** of unobserved or future parts of the world.
 
-Instead of learning:
+We will use the following notation throughout the tutorial:
+
+- \(x\) denotes an observation, such as an image, video clip, or telemetry window.
+- \(x_{\mathrm{ctx}}\) is the observed context part of \(x\).
+- \(x_{\mathrm{tgt}}\) is the hidden or future target part of \(x\).
+- \(f_\theta\) is a learned encoder with parameters \(\theta\).
+- \(f_{\bar{\theta}}\) is a target encoder with slowly updated parameters \(\bar{\theta}\).
+- \(z\) denotes a latent representation produced by an encoder.
+- \(z_{\mathrm{tgt}}\) is the target representation of \(x_{\mathrm{tgt}}\).
+
+With that notation, a reconstruction-style model tries to learn:
 
 \[
 x_{\mathrm{ctx}} \rightarrow x_{\mathrm{tgt}}
 \]
 
-they learn:
+A JEPA-style model instead learns:
 
 \[
 x_{\mathrm{ctx}} \rightarrow z_{\mathrm{tgt}}
 \]
 
-where:
+where the target representation is:
 
 \[
 z_{\mathrm{tgt}} = f_{\bar{\theta}}(x_{\mathrm{tgt}})
@@ -41,13 +51,15 @@ z_{\mathrm{tgt}} = f_{\bar{\theta}}(x_{\mathrm{tgt}})
 
 This shifts the learning problem from pixel-level reconstruction to latent predictive abstraction.
 
-The long-term goal is a world model:
+For sequential world modeling, we will also use \(t\) for a time index, \(k\) for a prediction horizon, \(z_{\leq t}\) for the latent history up to time \(t\), and \(a_{t:t+k}\) for an action sequence from time \(t\) through horizon \(t+k\).
+
+The long-term goal is a world model that predicts a future latent state:
 
 \[
 (z_{\leq t}, a_{t:t+k}) \rightarrow z_{t+k}
 \]
 
-that can support prediction, planning, and decision-making.
+Such a model can support prediction, planning, and decision-making.
 
 ---
 
@@ -101,7 +113,7 @@ Topics:
 - how the tutorial is structured,
 - why cycling intelligence is a useful real-world application.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -120,7 +132,7 @@ Topics:
 - temporal self-supervision,
 - world models.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -137,7 +149,7 @@ Topics:
 - observation prediction vs state prediction,
 - why latent targets can be better for world models.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -158,7 +170,7 @@ Topics:
 - mask leakage,
 - connection to temporal world models.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -181,7 +193,7 @@ Topics:
 - trajectory geometry,
 - planning-friendly latent spaces.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -191,7 +203,7 @@ Chapter 2 turns the mathematical objective into working code.
 
 The goal is a minimal but correct PyTorch implementation of image JEPA. The implementation should be small enough to understand completely, but realistic enough to train and evaluate.
 
-The current Chapter 2 draft covers the complete minimal image JEPA path, from patchification through the first end-to-end experiment and consolidation.
+Chapter 2 covers the complete minimal image JEPA path, from patchification through the first end-to-end experiment and consolidation.
 
 ## Sections
 
@@ -208,7 +220,7 @@ Topics:
 - model components,
 - training step overview.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -226,7 +238,7 @@ Topics:
 - reproducibility utilities,
 - typing and formatting conventions.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -243,7 +255,7 @@ Topics:
 - patch visualization,
 - shape discipline.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -259,7 +271,7 @@ Topics:
 - target-position conditioning,
 - interpolation for different image sizes.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -278,7 +290,7 @@ Topics:
 - mask leakage checks,
 - batch padding or fixed target sizes.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -296,7 +308,7 @@ Topics:
 - attention heads,
 - output representations.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -313,7 +325,7 @@ Topics:
 - target encoder checkpointing,
 - target representation stability.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -331,7 +343,7 @@ Topics:
 - predictor depth and width,
 - predictor asymmetry.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -350,7 +362,7 @@ Topics:
 - effective rank,
 - prediction-target similarity.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -370,7 +382,7 @@ Topics:
 - gradient clipping,
 - mixed precision optional.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -387,7 +399,7 @@ Topics:
 - train/validation split,
 - diagnostic plots.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -404,7 +416,7 @@ Topics:
 - common failure modes,
 - first ablation ideas.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -422,7 +434,7 @@ Topics:
 - implementation invariants,
 - completion criteria.
 
-Status: **drafted**
+Status: **reviewed**
 
 ---
 
@@ -996,17 +1008,19 @@ Status: **to generate**
 
 Chapter 4 extends the JEPA idea from static images to temporal prediction.
 
-The key transition is:
+Using the notation introduced above, the key transition is from image-context prediction:
 
 \[
 x_{\mathrm{ctx}} \rightarrow z_{\mathrm{tgt}}
 \]
 
-to:
+to temporal prediction:
 
 \[
 x_{\leq t} \rightarrow z_{t+k}
 \]
+
+Here \(x_{\leq t}\) denotes the observation history up to time \(t\), and \(z_{t+k}\) denotes the latent representation of the future state at horizon \(k\).
 
 ## Sections
 
@@ -1097,13 +1111,15 @@ Status: **to generate**
 
 Chapter 5 turns passive temporal prediction into controllable latent dynamics.
 
-The core objective becomes:
+The core objective becomes an action-conditioned latent dynamics model:
 
 \[
 \hat{z}_{t+k}
 =
 F_\phi(z_{\leq t}, a_{t:t+k})
 \]
+
+Here \(F_\phi\) is a learned dynamics predictor with parameters \(\phi\), and \(\hat{z}_{t+k}\) is its prediction of the future latent representation \(z_{t+k}\).
 
 ## Sections
 
