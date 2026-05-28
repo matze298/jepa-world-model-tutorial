@@ -638,7 +638,8 @@ predictor:
 
 mask:
   num_target_blocks: 4
-  target_block_size: [3, 3]
+  target_block_height: 3
+  target_block_width: 3
   context_ratio: 0.6
 
 training:
@@ -673,7 +674,7 @@ The minimal implementation can begin without YAML. We can hard-code a dataclass 
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(frozen=True)
 class MinimalJEPAConfig:
     image_size: int = 96
     patch_size: int = 8
@@ -688,12 +689,26 @@ class MinimalJEPAConfig:
     predictor_depth: int = 3
     predictor_heads: int = 4
 
+    num_target_blocks: int = 4
+    target_block_height: int = 3
+    target_block_width: int = 3
+    context_ratio: float = 0.6
+
     batch_size: int = 128
+    num_workers: int = 4
+
+    epochs: int = 100
     learning_rate: float = 5e-4
     weight_decay: float = 0.05
 
     ema_tau_base: float = 0.996
     ema_tau_final: float = 1.0
+
+    data_dir: str = "data"
+    run_dir: str = "runs"
+    checkpoint_dir: str = "checkpoints"
+
+    seed: int = 42
 ```
 
 Later, Chapter 3 can replace this with Hydra or OmegaConf.
@@ -1083,6 +1098,7 @@ The rest of Chapter 2 implements each component.
 2.9 Training Loop
 2.10 Evaluation: k-NN and Linear Probe
 2.11 Running the First Experiment
+2.12 Chapter 2 Consolidation
 ```
 
 The next section sets up the project structure and development environment.
@@ -1091,17 +1107,17 @@ The next section sets up the project structure and development environment.
 
 ## References and Further Reading
 
-- Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, Nicolas Ballas, **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.  
+- Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, Nicolas Ballas, **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.
   <https://arxiv.org/abs/2301.08243>
 
-- Facebook Research, **Official I-JEPA Codebase**.  
+- Facebook Research, **Official I-JEPA Codebase**.
   <https://github.com/facebookresearch/ijepa>
 
-- Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li, Piotr Dollár, Ross Girshick, **Masked Autoencoders Are Scalable Vision Learners**, 2021.  
+- Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li, Piotr Dollár, Ross Girshick, **Masked Autoencoders Are Scalable Vision Learners**, 2021.
   <https://arxiv.org/abs/2111.06377>
 
-- Ashish Vaswani et al., **Attention Is All You Need**, 2017.  
+- Ashish Vaswani et al., **Attention Is All You Need**, 2017.
   <https://arxiv.org/abs/1706.03762>
 
-- Alexey Dosovitskiy et al., **An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale**, 2020.  
+- Alexey Dosovitskiy et al., **An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale**, 2020.
   <https://arxiv.org/abs/2010.11929>

@@ -990,7 +990,7 @@ if __name__ == "__main__":
 Run:
 
 ```bash
-uv run python experiments/train_minimal.py --preset local_debug --dataset cifar10
+python experiments/train_minimal.py --preset local_debug --dataset cifar10
 ```
 
 This should run a tiny local debug experiment.
@@ -1219,7 +1219,7 @@ if __name__ == "__main__":
 Run on cloud:
 
 ```bash
-uv run python experiments/train_cloud.py --dataset stl10
+python experiments/train_cloud.py --dataset stl10
 ```
 
 This is still plain PyTorch. Chapter 3 will introduce better experiment infrastructure.
@@ -1319,7 +1319,7 @@ if __name__ == "__main__":
 Run:
 
 ```bash
-uv run python experiments/overfit_tiny_batch.py
+python experiments/overfit_tiny_batch.py
 ```
 
 Expected behavior:
@@ -1416,7 +1416,7 @@ def test_trainable_parameters_excludes_target_encoder():
 Run:
 
 ```bash
-uv run pytest tests/test_model.py
+pytest tests/test_model.py
 ```
 
 ---
@@ -1486,7 +1486,7 @@ def test_train_step_runs():
 Run:
 
 ```bash
-uv run pytest tests/test_training.py
+pytest tests/test_training.py
 ```
 
 This test confirms the entire training step works.

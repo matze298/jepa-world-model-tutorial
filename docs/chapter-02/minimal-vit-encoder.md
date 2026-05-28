@@ -826,7 +826,7 @@ def test_minimal_vit_encoder_rejects_bad_batch_size():
 Run:
 
 ```bash
-uv run pytest tests/test_vit.py
+pytest tests/test_vit.py
 ```
 
 ---
@@ -904,7 +904,7 @@ notebooks/02_debug_encoder.py
 Open:
 
 ```bash
-uv run marimo edit notebooks/02_debug_encoder.py
+marimo edit notebooks/02_debug_encoder.py
 ```
 
 Example cells:
@@ -1124,14 +1124,14 @@ The next section implements the EMA target encoder mechanism: how the target enc
 
 ## References and Further Reading
 
-- Ashish Vaswani et al., **Attention Is All You Need**, 2017.  
+- Ashish Vaswani et al., **Attention Is All You Need**, 2017.
   <https://arxiv.org/abs/1706.03762>
 
-- Alexey Dosovitskiy et al., **An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale**, 2020.  
+- Alexey Dosovitskiy et al., **An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale**, 2020.
   <https://arxiv.org/abs/2010.11929>
 
-- Mahmoud Assran et al., **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.  
+- Mahmoud Assran et al., **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.
   <https://arxiv.org/abs/2301.08243>
 
-- PyTorch, **MultiheadAttention**.  
+- PyTorch, **MultiheadAttention**.
   <https://pytorch.org/docs/stable/generated/torch.nn.MultiheadAttention.html>

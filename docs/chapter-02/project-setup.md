@@ -46,6 +46,20 @@ For cloud experiments, prefer a PyTorch/CUDA image that already has a working GP
 
 This tutorial uses `uv` exclusively.
 
+The repository includes a bootstrap script that creates `.venv`, syncs the locked dependencies, and installs Git hooks:
+
+```bash
+./setup.py
+```
+
+After setup, activate the environment:
+
+```bash
+source .venv/bin/activate
+```
+
+Unless a command explicitly manages dependencies with `uv`, the rest of this chapter assumes that activated environment.
+
 Use:
 
 ```bash
@@ -61,10 +75,10 @@ pip install package-name
 Use:
 
 ```bash
-uv run python ...
+python ...
 ```
 
-instead of relying on a manually activated environment.
+inside the activated project environment.
 
 Use:
 
@@ -118,7 +132,7 @@ Development, documentation, and debugging tools:
 uv add --dev \
   pytest \
   ruff \
-  mypy \
+  ty \
   marimo \
   tensorboard \
   mkdocs-material \
@@ -220,26 +234,29 @@ Create marimo notebooks as Python files, for example:
 notebooks/
 ├── 00_debug_environment.py
 ├── 01_visualize_patches_and_masks.py
-├── 02_overfit_tiny_batch.py
-└── 03_representation_diagnostics.py
+├── 02_debug_encoder.py
+├── 03_debug_ema.py
+├── 04_debug_predictor.py
+├── 05_debug_losses_and_diagnostics.py
+└── 06_retrieval_and_probe.py
 ```
 
 Start the marimo editor:
 
 ```bash
-uv run marimo edit notebooks/00_debug_environment.py
+marimo edit notebooks/00_debug_environment.py
 ```
 
 Run a marimo notebook as a script:
 
 ```bash
-uv run marimo run notebooks/02_overfit_tiny_batch.py
+marimo run notebooks/02_debug_encoder.py
 ```
 
 Launch the marimo tutorial:
 
 ```bash
-uv run marimo tutorial intro
+marimo tutorial intro
 ```
 
 A notebook should import from the package:
@@ -295,9 +312,9 @@ cloud GPU:
 The local command pattern should be:
 
 ```bash
-uv run pytest
-uv run marimo edit notebooks/01_visualize_patches_and_masks.py
-uv run python experiments/train_minimal.py --preset local_debug
+pytest
+marimo edit notebooks/01_visualize_patches_and_masks.py
+python experiments/train_minimal.py --preset local_debug
 ```
 
 ---
@@ -330,7 +347,8 @@ git clone <repo-url>
 cd jepa-world-model-tutorial
 
 uv sync
-uv run python experiments/train_cloud.py --preset cloud_run
+source .venv/bin/activate
+python experiments/train_cloud.py --dataset stl10
 ```
 
 The training code should not care whether it runs locally or remotely. Only the config should change.
@@ -565,7 +583,7 @@ def test_device_selection_runs():
 Run:
 
 ```bash
-uv run pytest
+pytest
 ```
 
 This is enough for setup. The meaningful tests begin with patchification and mask sampling.
@@ -596,17 +614,19 @@ The implementation order is:
 
 ```text
 1. patchify.py
-2. masks.py
-3. position.py
+2. position.py
+3. masks.py
 4. vit.py
-5. predictor.py
-6. ema.py
+5. ema.py
+6. predictor.py
 7. losses.py
 8. diagnostics.py
 9. model.py
 10. data.py
-11. train_minimal.py
-12. train_cloud.py
+11. checkpointing.py
+12. evaluation.py
+13. train_minimal.py
+14. train_cloud.py
 ```
 
 ---

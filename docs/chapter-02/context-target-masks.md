@@ -1153,7 +1153,7 @@ def test_indices_to_bool_mask():
 Run:
 
 ```bash
-uv run pytest tests/test_masks.py
+pytest tests/test_masks.py
 ```
 
 ---
@@ -1321,17 +1321,17 @@ The next section builds the minimal ViT encoder that will process context and ta
 
 ## References and Further Reading
 
-- Mahmoud Assran et al., **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.  
+- Mahmoud Assran et al., **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.
   <https://arxiv.org/abs/2301.08243>
 
-- Facebook Research, **Official I-JEPA Codebase**.  
+- Facebook Research, **Official I-JEPA Codebase**.
   <https://github.com/facebookresearch/ijepa>
 
-- Kaiming He et al., **Masked Autoencoders Are Scalable Vision Learners**, 2021.  
+- Kaiming He et al., **Masked Autoencoders Are Scalable Vision Learners**, 2021.
   <https://arxiv.org/abs/2111.06377>
 
-- PyTorch, **torch.isin documentation**.  
+- PyTorch, **torch.isin documentation**.
   <https://pytorch.org/docs/stable/generated/torch.isin.html>
 
-- PyTorch, **torch.scatter documentation**.  
+- PyTorch, **torch.scatter documentation**.
   <https://pytorch.org/docs/stable/generated/torch.Tensor.scatter_.html>

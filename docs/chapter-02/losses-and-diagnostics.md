@@ -1125,7 +1125,7 @@ def test_latent_loss_rejects_unknown_type():
 Run:
 
 ```bash
-uv run pytest tests/test_losses.py
+pytest tests/test_losses.py
 ```
 
 ---
@@ -1278,7 +1278,7 @@ def test_assert_finite_tensor_rejects_nan():
 Run:
 
 ```bash
-uv run pytest tests/test_diagnostics.py
+pytest tests/test_diagnostics.py
 ```
 
 ---
@@ -1399,7 +1399,7 @@ notebooks/05_debug_losses_and_diagnostics.py
 Open:
 
 ```bash
-uv run marimo edit notebooks/05_debug_losses_and_diagnostics.py
+marimo edit notebooks/05_debug_losses_and_diagnostics.py
 ```
 
 Suggested cells:

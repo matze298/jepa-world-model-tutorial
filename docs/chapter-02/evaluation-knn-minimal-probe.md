@@ -920,7 +920,7 @@ if __name__ == "__main__":
 Run:
 
 ```bash
-uv run python experiments/evaluate_minimal.py \
+python experiments/evaluate_minimal.py \
   --checkpoint checkpoints/minimal_ijepa_epoch_2.pt \
   --dataset cifar10 \
   --max-batches 20
@@ -982,7 +982,7 @@ notebooks/06_retrieval_and_probe.py
 Open:
 
 ```bash
-uv run marimo edit notebooks/06_retrieval_and_probe.py
+marimo edit notebooks/06_retrieval_and_probe.py
 ```
 
 Suggested workflow:
@@ -1221,7 +1221,7 @@ def test_train_linear_probe_on_tiny_features():
 Run:
 
 ```bash
-uv run pytest tests/test_evaluation.py
+pytest tests/test_evaluation.py
 ```
 
 ---

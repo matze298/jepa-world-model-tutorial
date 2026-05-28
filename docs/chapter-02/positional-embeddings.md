@@ -998,7 +998,7 @@ def test_interpolate_position_embedding_shape():
 Run:
 
 ```bash
-uv run pytest tests/test_position.py
+pytest tests/test_position.py
 ```
 
 ---
@@ -1180,14 +1180,14 @@ The next section implements context and target mask sampling, where these patch 
 
 ## References and Further Reading
 
-- Ashish Vaswani et al., **Attention Is All You Need**, 2017.  
+- Ashish Vaswani et al., **Attention Is All You Need**, 2017.
   <https://arxiv.org/abs/1706.03762>
 
-- Alexey Dosovitskiy et al., **An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale**, 2020.  
+- Alexey Dosovitskiy et al., **An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale**, 2020.
   <https://arxiv.org/abs/2010.11929>
 
-- Kaiming He et al., **Masked Autoencoders Are Scalable Vision Learners**, 2021.  
+- Kaiming He et al., **Masked Autoencoders Are Scalable Vision Learners**, 2021.
   <https://arxiv.org/abs/2111.06377>
 
-- Mahmoud Assran et al., **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.  
+- Mahmoud Assran et al., **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.
   <https://arxiv.org/abs/2301.08243>

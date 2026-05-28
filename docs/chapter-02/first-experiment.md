@@ -1,6 +1,6 @@
 # 2.11 Running the First Experiment
 
-We now have a complete minimal I-JEPA implementation.
+We now have the full minimal I-JEPA implementation path specified.
 
 This section runs the first end-to-end experiment and defines what success should look like.
 
@@ -54,7 +54,7 @@ It is the fastest way to catch training-loop bugs.
 Start with:
 
 ```bash
-uv run pytest
+pytest
 ```
 
 At this point, the tests should cover:
@@ -90,7 +90,7 @@ The tiny overfit run repeatedly trains on one batch.
 Run:
 
 ```bash
-uv run python experiments/overfit_tiny_batch.py
+python experiments/overfit_tiny_batch.py
 ```
 
 Expected behavior:
@@ -163,7 +163,7 @@ Those require dataset-level evaluation.
 Next, run a short training experiment on CIFAR-10.
 
 ```bash
-uv run python experiments/train_minimal.py \
+python experiments/train_minimal.py \
   --preset local_debug \
   --dataset cifar10 \
   --loss-type smooth_l1
@@ -214,7 +214,7 @@ checkpoints/minimal_ijepa_epoch_2.pt
 After the local run, evaluate the checkpoint.
 
 ```bash
-uv run python experiments/evaluate_minimal.py \
+python experiments/evaluate_minimal.py \
   --checkpoint checkpoints/minimal_ijepa_epoch_2.pt \
   --dataset cifar10 \
   --max-batches 20
@@ -248,7 +248,7 @@ A useful next comparison is a random encoder baseline. If the trained model perf
 Once the CIFAR-10 debug run works, move to STL-10.
 
 ```bash
-uv run python experiments/train_minimal.py \
+python experiments/train_minimal.py \
   --preset default \
   --dataset stl10 \
   --loss-type smooth_l1
@@ -284,8 +284,9 @@ On a cloud GPU machine:
 cd /workspace/jepa-world-model-tutorial
 
 uv sync
+source .venv/bin/activate
 
-uv run python experiments/train_cloud.py \
+python experiments/train_cloud.py \
   --dataset stl10 \
   --loss-type smooth_l1
 ```
@@ -740,7 +741,7 @@ Chapter 3 will introduce structured experiment tracking.
 Before moving on, verify:
 
 ```text
-[ ] uv run pytest passes
+[ ] pytest passes
 [ ] marimo patch/mask visualization works
 [ ] tiny overfit run reduces loss
 [ ] local_debug training run completes
@@ -753,7 +754,7 @@ Before moving on, verify:
 [ ] representation stats are non-collapsed
 ```
 
-If all boxes are checked, the minimal implementation is complete.
+If all boxes are checked in the accompanying implementation, the minimal implementation is complete.
 
 ---
 
@@ -775,7 +776,7 @@ We covered:
 - experiment notes,
 - Chapter 2 completion checklist.
 
-At this point, we have a working minimal I-JEPA system.
+At this point, the tutorial has specified a working minimal I-JEPA system.
 
 The next chapter will turn this minimal implementation into a more research-grade training framework, adding stronger configuration, logging, checkpointing, mixed precision, and scalable cloud execution.
 

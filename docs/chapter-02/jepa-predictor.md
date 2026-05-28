@@ -814,7 +814,7 @@ def test_predictor_receives_gradients():
 Run:
 
 ```bash
-uv run pytest tests/test_predictor.py
+pytest tests/test_predictor.py
 ```
 
 ---
@@ -902,7 +902,7 @@ notebooks/04_debug_predictor.py
 Open:
 
 ```bash
-uv run marimo edit notebooks/04_debug_predictor.py
+marimo edit notebooks/04_debug_predictor.py
 ```
 
 Example cells:

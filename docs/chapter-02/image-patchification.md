@@ -857,7 +857,7 @@ notebooks/01_visualize_patches_and_masks.py
 Open it with:
 
 ```bash
-uv run marimo edit notebooks/01_visualize_patches_and_masks.py
+marimo edit notebooks/01_visualize_patches_and_masks.py
 ```
 
 The notebook should load one image and inspect patchification.
@@ -1064,7 +1064,7 @@ def test_gather_patches_values():
 Run:
 
 ```bash
-uv run pytest tests/test_patchify.py
+pytest tests/test_patchify.py
 ```
 
 Expected result:
@@ -1289,17 +1289,17 @@ The next section adds positional embeddings so that patch tokens carry spatial i
 
 ## References and Further Reading
 
-- Alexey Dosovitskiy et al., **An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale**, 2020.  
+- Alexey Dosovitskiy et al., **An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale**, 2020.
   <https://arxiv.org/abs/2010.11929>
 
-- Kaiming He et al., **Masked Autoencoders Are Scalable Vision Learners**, 2021.  
+- Kaiming He et al., **Masked Autoencoders Are Scalable Vision Learners**, 2021.
   <https://arxiv.org/abs/2111.06377>
 
-- Mahmoud Assran et al., **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.  
+- Mahmoud Assran et al., **Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture**, 2023.
   <https://arxiv.org/abs/2301.08243>
 
-- PyTorch, **torch.gather documentation**.  
+- PyTorch, **torch.gather documentation**.
   <https://pytorch.org/docs/stable/generated/torch.gather.html>
 
-- marimo, **Documentation**.  
+- marimo, **Documentation**.
   <https://docs.marimo.io/>

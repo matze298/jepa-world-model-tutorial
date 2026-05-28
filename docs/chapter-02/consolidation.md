@@ -1,10 +1,10 @@
 # 2.12 Chapter 2 Consolidation
 
-Chapter 2 built a complete minimal I-JEPA implementation.
+Chapter 2 specifies a complete minimal I-JEPA implementation.
 
-The purpose of this consolidation section is to summarize what now exists, how the pieces fit together, and what should be true before moving on to Chapter 3.
+The purpose of this consolidation section is to summarize the implementation target, how the pieces fit together, and what should be true before moving on to Chapter 3.
 
-At this point, the project should contain:
+At this point, the accompanying implementation should contain:
 
 - reusable model code,
 - mask and patch utilities,
@@ -15,7 +15,7 @@ At this point, the project should contain:
 - tests,
 - marimo debugging notebooks.
 
-The implementation is intentionally minimal, but it is complete enough to train, inspect, checkpoint, and evaluate.
+The implementation target is intentionally minimal, but complete enough to train, inspect, checkpoint, and evaluate.
 
 ---
 
@@ -92,10 +92,10 @@ Their roles are:
 The expected execution sequence is:
 
 ```bash
-uv run pytest
-uv run python experiments/overfit_tiny_batch.py
-uv run python experiments/train_minimal.py --preset local_debug --dataset cifar10
-uv run python experiments/evaluate_minimal.py \
+pytest
+python experiments/overfit_tiny_batch.py
+python experiments/train_minimal.py --preset local_debug --dataset cifar10
+python experiments/evaluate_minimal.py \
   --checkpoint checkpoints/minimal_ijepa_epoch_2.pt \
   --dataset cifar10 \
   --max-batches 20
@@ -104,7 +104,7 @@ uv run python experiments/evaluate_minimal.py \
 For a larger run:
 
 ```bash
-uv run python experiments/train_minimal.py \
+python experiments/train_minimal.py \
   --preset default \
   --dataset stl10 \
   --loss-type smooth_l1
@@ -114,8 +114,9 @@ For cloud:
 
 ```bash
 uv sync
+source .venv/bin/activate
 
-uv run python experiments/train_cloud.py \
+python experiments/train_cloud.py \
   --dataset stl10 \
   --loss-type smooth_l1
 ```
@@ -163,7 +164,7 @@ The tests cover:
 Run all tests with:
 
 ```bash
-uv run pytest
+pytest
 ```
 
 This should pass before starting serious experiments.
@@ -202,13 +203,13 @@ Their roles are:
 Open a notebook with:
 
 ```bash
-uv run marimo edit notebooks/01_visualize_patches_and_masks.py
+marimo edit notebooks/01_visualize_patches_and_masks.py
 ```
 
 Run one as a script with:
 
 ```bash
-uv run marimo run notebooks/02_debug_encoder.py
+marimo run notebooks/02_debug_encoder.py
 ```
 
 The notebooks should import from `src/jepa_world_model/`. They should not contain reusable model code.
@@ -430,22 +431,22 @@ features.shape
 Run this checklist before leaving Chapter 2.
 
 ```bash
-uv run pytest
+pytest
 ```
 
 ```bash
-uv run python experiments/overfit_tiny_batch.py
+python experiments/overfit_tiny_batch.py
 ```
 
 ```bash
-uv run python experiments/train_minimal.py \
+python experiments/train_minimal.py \
   --preset local_debug \
   --dataset cifar10 \
   --loss-type smooth_l1
 ```
 
 ```bash
-uv run python experiments/evaluate_minimal.py \
+python experiments/evaluate_minimal.py \
   --checkpoint checkpoints/minimal_ijepa_epoch_2.pt \
   --dataset cifar10 \
   --max-batches 20
@@ -454,7 +455,7 @@ uv run python experiments/evaluate_minimal.py \
 Optional STL-10 run:
 
 ```bash
-uv run python experiments/train_minimal.py \
+python experiments/train_minimal.py \
   --preset default \
   --dataset stl10 \
   --loss-type smooth_l1
@@ -516,7 +517,7 @@ Once these are true, we have a minimal but complete I-JEPA implementation.
 
 ## 2.12.12 Transition to Chapter 3
 
-Chapter 2 produced a working implementation.
+Chapter 2 defined the working minimal implementation.
 
 Chapter 3 will make it more usable for research.
 
@@ -554,9 +555,9 @@ Now we can make it scalable.
 
 ## 2.12.13 Summary
 
-Chapter 2 implemented a complete minimal I-JEPA system.
+Chapter 2 specified a complete minimal I-JEPA system.
 
-We now have:
+The accompanying implementation should now have:
 
 - patch-level image tokenization,
 - position-aware patch encoders,
@@ -571,9 +572,9 @@ We now have:
 - tests,
 - marimo debugging notebooks.
 
-The implementation is intentionally small and inspectable.
+The implementation target is intentionally small and inspectable.
 
-It is ready to be refactored into a more research-grade framework in Chapter 3.
+Once implemented and verified, it is ready to be refactored into a more research-grade framework in Chapter 3.
 
 ---
 

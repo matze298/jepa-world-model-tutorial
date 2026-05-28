@@ -828,7 +828,7 @@ def test_parameter_distance_zero_after_initialization():
 Run:
 
 ```bash
-uv run pytest tests/test_ema.py
+pytest tests/test_ema.py
 ```
 
 ---
@@ -905,7 +905,7 @@ notebooks/03_debug_ema.py
 Open:
 
 ```bash
-uv run marimo edit notebooks/03_debug_ema.py
+marimo edit notebooks/03_debug_ema.py
 ```
 
 Useful cells:
